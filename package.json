@@ -1,16 +1,14 @@
 {
   "name": "diff-image",
-  "version": "1.0.0",
-  "description": "",
-  "repository": {
-    "type": "git",
-    "url": "git@tanjoin:tanjoin/diff-image.git"
-  },
-  "license": "Apache-2.0",
-  "author": "tanjoin",
-  "type": "commonjs",
-  "main": "index.js",
+  "private": true,
+  "version": "2025.10.29",
+  "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "devDependencies": {
+    "vite": "^7.1.7"
   }
 }
