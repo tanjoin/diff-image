@@ -1,0 +1,16 @@
+{
+  "name": "diff-image",
+  "version": "1.0.0",
+  "description": "",
+  "repository": {
+    "type": "git",
+    "url": "git@tanjoin:tanjoin/diff-image.git"
+  },
+  "license": "Apache-2.0",
+  "author": "tanjoin",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  }
+}
