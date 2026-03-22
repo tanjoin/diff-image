@@ -34,6 +34,11 @@ document.querySelector('#app').innerHTML = `
     <h2>Diff Mask B (only differences)</h2>
     <canvas id="diff-mask-b"></canvas>
   </div>
+  <span id="footer">
+    <p>
+      <a href="https://github.com/tanjoin/diff-image" class="github-link" target="_blank">GitHub</a>
+    </p>
+  </span>
 `;
 
 showSplashScreen();
