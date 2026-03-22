@@ -1,7 +1,7 @@
 {
   "name": "diff-image",
   "private": true,
-  "version": "2025.10.29",
+  "version": "2026.03.22",
   "type": "module",
   "scripts": {
     "dev": "vite",
