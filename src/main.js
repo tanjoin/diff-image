@@ -2,11 +2,16 @@ import './style.css'
 import './image-wrapper.css'
 import { SPLASH_SCREEN_HTML, showSplashScreen } from './splash';
 import { UPLOAD_IMAGE_HTML, setupUploadButtons } from './upload-image';
+import { displayDiff } from './diff';
 
 document.querySelector('#app').innerHTML = `
   ${SPLASH_SCREEN_HTML}
   <div id="header">
     <h1>diff-image</h1>
+  </div>
+  <div>
+    <input type="checkbox" id="enable-width-adjustment" name="enable-width-adjustment">
+    <label for="enable-width-adjustment">白背景で幅合わせ</label>
   </div>
   <div id="upload-container">
     ${UPLOAD_IMAGE_HTML}
@@ -33,3 +38,7 @@ document.querySelector('#app').innerHTML = `
 
 showSplashScreen();
 setupUploadButtons();
+
+document.getElementById('enable-width-adjustment').addEventListener('change', () => {
+  displayDiff();
+});

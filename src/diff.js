@@ -1,22 +1,37 @@
-export function diffImages(image1, image2) {
+export function diffImages(image1, image2, enableWidthAdjustment = false) {
   const canvas = document.createElement('canvas');
   const ctx = canvas.getContext('2d');
-  
+
   // CSSの影響を受けない元画像のピクセルサイズを使用
+  // 幅調整が有効で幅が異なる場合は、広い方の幅に白背景で中央寄せする
+  const shouldAdjustWidth = enableWidthAdjustment && image1.naturalWidth !== image2.naturalWidth;
   const width = Math.max(image1.naturalWidth, image2.naturalWidth);
   const height = Math.max(image1.naturalHeight, image2.naturalHeight);
   canvas.width = width;
   canvas.height = height;
+
+  const drawImageWithOptionalWidthAdjustment = (image) => {
+    if (shouldAdjustWidth) {
+      const offsetX = Math.floor((width - image.naturalWidth) / 2);
+      ctx.fillStyle = '#ffffff';
+      ctx.fillRect(0, 0, width, height);
+      ctx.drawImage(image, offsetX, 0, image.naturalWidth, image.naturalHeight);
+      return;
+    }
+
+    ctx.drawImage(image, 0, 0, image.naturalWidth, image.naturalHeight);
+  };
   
   // 元画像1を描画
-  ctx.drawImage(image1, 0, 0, image1.naturalWidth, image1.naturalHeight);
+  drawImageWithOptionalWidthAdjustment(image1);
   const imgData1 = ctx.getImageData(0, 0, width, height);
   
   // canvasをリセット（widthを再設定すると自動でクリアされる）
   canvas.width = width;
+  canvas.height = height;
   
   // 元画像2を描画
-  ctx.drawImage(image2, 0, 0, image2.naturalWidth, image2.naturalHeight);
+  drawImageWithOptionalWidthAdjustment(image2);
   const imgData2 = ctx.getImageData(0, 0, width, height);
   
   // 差分画像の作成（ベースは画像1）
@@ -53,24 +68,38 @@ export function diffImages(image1, image2) {
   return canvas;
 }
 
-export function createDiffMaskA(image1, image2) {
+export function createDiffMaskA(image1, image2, enableWidthAdjustment = false) {
   const canvas = document.createElement('canvas');
   const ctx = canvas.getContext('2d');
   
+  const shouldAdjustWidth = enableWidthAdjustment && image1.naturalWidth !== image2.naturalWidth;
   const width = Math.max(image1.naturalWidth, image2.naturalWidth);
   const height = Math.max(image1.naturalHeight, image2.naturalHeight);
   canvas.width = width;
   canvas.height = height;
+
+  const drawImageWithOptionalWidthAdjustment = (image) => {
+    if (shouldAdjustWidth) {
+      const offsetX = Math.floor((width - image.naturalWidth) / 2);
+      ctx.fillStyle = '#ffffff';
+      ctx.fillRect(0, 0, width, height);
+      ctx.drawImage(image, offsetX, 0, image.naturalWidth, image.naturalHeight);
+      return;
+    }
+
+    ctx.drawImage(image, 0, 0, image.naturalWidth, image.naturalHeight);
+  };
   
   // 元画像1を描画
-  ctx.drawImage(image1, 0, 0, image1.naturalWidth, image1.naturalHeight);
+  drawImageWithOptionalWidthAdjustment(image1);
   const imgData1 = ctx.getImageData(0, 0, width, height);
   
   // canvasをリセット
   canvas.width = width;
+  canvas.height = height;
   
   // 元画像2を描画
-  ctx.drawImage(image2, 0, 0, image2.naturalWidth, image2.naturalHeight);
+  drawImageWithOptionalWidthAdjustment(image2);
   const imgData2 = ctx.getImageData(0, 0, width, height);
   
   // 差分があった部分だけ画像Aを表示
@@ -104,24 +133,38 @@ export function createDiffMaskA(image1, image2) {
   return canvas;
 }
 
-export function createDiffMaskB(image1, image2) {
+export function createDiffMaskB(image1, image2, enableWidthAdjustment = false) {
   const canvas = document.createElement('canvas');
   const ctx = canvas.getContext('2d');
   
+  const shouldAdjustWidth = enableWidthAdjustment && image1.naturalWidth !== image2.naturalWidth;
   const width = Math.max(image1.naturalWidth, image2.naturalWidth);
   const height = Math.max(image1.naturalHeight, image2.naturalHeight);
   canvas.width = width;
   canvas.height = height;
+
+  const drawImageWithOptionalWidthAdjustment = (image) => {
+    if (shouldAdjustWidth) {
+      const offsetX = Math.floor((width - image.naturalWidth) / 2);
+      ctx.fillStyle = '#ffffff';
+      ctx.fillRect(0, 0, width, height);
+      ctx.drawImage(image, offsetX, 0, image.naturalWidth, image.naturalHeight);
+      return;
+    }
+
+    ctx.drawImage(image, 0, 0, image.naturalWidth, image.naturalHeight);
+  };
   
   // 元画像1を描画
-  ctx.drawImage(image1, 0, 0, image1.naturalWidth, image1.naturalHeight);
+  drawImageWithOptionalWidthAdjustment(image1);
   const imgData1 = ctx.getImageData(0, 0, width, height);
   
   // canvasをリセット
   canvas.width = width;
+  canvas.height = height;
   
   // 元画像2を描画
-  ctx.drawImage(image2, 0, 0, image2.naturalWidth, image2.naturalHeight);
+  drawImageWithOptionalWidthAdjustment(image2);
   const imgData2 = ctx.getImageData(0, 0, width, height);
   
   // 差分があった部分だけ画像Bを表示
@@ -161,24 +204,25 @@ export function displayDiff() {
   const diffCanvas = document.getElementById('diff-canvas');
   const diffMaskACanvas = document.getElementById('diff-mask-a');
   const diffMaskBCanvas = document.getElementById('diff-mask-b');
+  const enabledWidthAdjustment = document.getElementById('enable-width-adjustment').checked;
 
   if (imgA.src && imgB.src) {
     // 通常の差分表示
-    const diffCanvasResult = diffImages(imgA, imgB);
+    const diffCanvasResult = diffImages(imgA, imgB, enabledWidthAdjustment);
     diffCanvas.width = diffCanvasResult.width;
     diffCanvas.height = diffCanvasResult.height;
     const diffCtx = diffCanvas.getContext('2d');
     diffCtx.drawImage(diffCanvasResult, 0, 0);
     
     // 差分部分だけ画像Aを表示
-    const diffMaskAResult = createDiffMaskA(imgA, imgB);
+    const diffMaskAResult = createDiffMaskA(imgA, imgB, enabledWidthAdjustment);
     diffMaskACanvas.width = diffMaskAResult.width;
     diffMaskACanvas.height = diffMaskAResult.height;
     const diffMaskACtx = diffMaskACanvas.getContext('2d');
     diffMaskACtx.drawImage(diffMaskAResult, 0, 0);
     
     // 差分部分だけ画像Bを表示
-    const diffMaskBResult = createDiffMaskB(imgA, imgB);
+    const diffMaskBResult = createDiffMaskB(imgA, imgB, enabledWidthAdjustment);
     diffMaskBCanvas.width = diffMaskBResult.width;
     diffMaskBCanvas.height = diffMaskBResult.height;
     const diffMaskBCtx = diffMaskBCanvas.getContext('2d');
