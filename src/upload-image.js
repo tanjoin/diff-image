@@ -14,6 +14,15 @@ export function setupUploadButtons() {
   const uploadInput1 = document.getElementById('upload-input');
   const uploadButton2 = document.getElementById('upload-button-2');
   const uploadInput2 = document.getElementById('upload-input-2');
+  const singleImageDiffCheckbox = document.getElementById('single-image-diff');
+
+  const syncSingleImageDiffUI = () => {
+    const isSingleImageDiff = singleImageDiffCheckbox.checked;
+    const imageBWrapper = document.querySelector('[data-target="image-b"]');
+
+    uploadButton2.style.display = isSingleImageDiff ? 'none' : 'inline-block';
+    imageBWrapper.style.display = isSingleImageDiff ? 'none' : 'flex';
+  };
 
   uploadButton1.addEventListener('click', () => {
     uploadInput1.click();
@@ -30,6 +39,9 @@ export function setupUploadButtons() {
   uploadInput2.addEventListener('change', (event) => {
     handleImageUpload(event, 'image-b');
   });
+
+  singleImageDiffCheckbox.addEventListener('change', syncSingleImageDiffUI);
+  syncSingleImageDiffUI();
 
   // ドラッグアンドドロップとクリックのセットアップ
   setupImageWrapper('image-a', uploadInput1);

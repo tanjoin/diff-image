@@ -12,6 +12,13 @@ document.querySelector('#app').innerHTML = `
   <div>
     <input type="checkbox" id="enable-width-adjustment" name="enable-width-adjustment">
     <label for="enable-width-adjustment">白背景で幅合わせ</label>
+    <br>
+    <input type="checkbox" id="single-image-diff" name="single-image-diff">
+    <label for="single-image-diff">1つの画像で比較</label>
+    <input type="radio" id="single-image-diff-h" name="single-image-diff-option" value="horizontal" checked>
+    <label for="single-image-diff-h">横並び</label>
+    <input type="radio" id="single-image-diff-v" name="single-image-diff-option" value="vertical">
+    <label for="single-image-diff-v">縦並び</label>
   </div>
   <div id="upload-container">
     ${UPLOAD_IMAGE_HTML}
@@ -46,4 +53,14 @@ setupUploadButtons();
 
 document.getElementById('enable-width-adjustment').addEventListener('change', () => {
   displayDiff();
+});
+
+document.getElementById('single-image-diff').addEventListener('change', () => {
+  displayDiff();
+});
+
+document.querySelectorAll('input[name="single-image-diff-option"]').forEach((element) => {
+  element.addEventListener('change', () => {
+    displayDiff();
+  });
 });
