@@ -136,3 +136,13 @@ button:focus-visible {
   text-decoration: none;
   font-size: 0.9em;
 }
+
+#diff-animation-container {
+  margin-top: 1.5rem;
+}
+
+#diff-animation-image {
+  max-width: 100%;
+  height: auto;
+  border: 2px solid #ccc;
+}

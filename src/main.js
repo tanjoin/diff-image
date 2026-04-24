@@ -19,6 +19,9 @@ document.querySelector('#app').innerHTML = `
     <label for="single-image-diff-h">横並び</label>
     <input type="radio" id="single-image-diff-v" name="single-image-diff-option" value="vertical">
     <label for="single-image-diff-v">縦並び</label>
+    <br>
+    <input type="checkbox" id="show-diff-animation" name="show-diff-animation">
+    <label for="show-diff-animation">Diffアニメーションを表示</label>
   </div>
   <div id="upload-container">
     ${UPLOAD_IMAGE_HTML}
@@ -40,6 +43,10 @@ document.querySelector('#app').innerHTML = `
     <canvas id="diff-mask-a"></canvas>
     <h2>Diff Mask B (only differences)</h2>
     <canvas id="diff-mask-b"></canvas>
+    <div id="diff-animation-container" style="display: none;">
+      <h2>Diff Animation</h2>
+      <img id="diff-animation-image" alt="Diff animation preview">
+    </div>
   </div>
   <span id="footer">
     <p>
@@ -63,4 +70,8 @@ document.querySelectorAll('input[name="single-image-diff-option"]').forEach((ele
   element.addEventListener('change', () => {
     displayDiff();
   });
+});
+
+document.getElementById('show-diff-animation').addEventListener('change', () => {
+  displayDiff();
 });

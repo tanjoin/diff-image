@@ -1,3 +1,5 @@
+let diffAnimationIntervalId = null;
+
 function getSourceWidth(source) {
   return source.naturalWidth ?? source.width;
 }
@@ -41,6 +43,69 @@ function createSplitCanvasesFromSingleImage(image, orientation) {
   rightCanvas.getContext('2d').drawImage(image, width - partWidth, 0, partWidth, height, 0, 0, partWidth, height);
 
   return [leftCanvas, rightCanvas];
+}
+
+function stopDiffAnimation() {
+  if (diffAnimationIntervalId !== null) {
+    window.clearInterval(diffAnimationIntervalId);
+    diffAnimationIntervalId = null;
+  }
+}
+
+function hideDiffAnimation() {
+  stopDiffAnimation();
+
+  const animationContainer = document.getElementById('diff-animation-container');
+  const animationImage = document.getElementById('diff-animation-image');
+
+  animationContainer.style.display = 'none';
+  animationImage.removeAttribute('src');
+}
+
+function showDiffAnimation(image1, image2, enableWidthAdjustment = false) {
+  const image1Width = getSourceWidth(image1);
+  const image2Width = getSourceWidth(image2);
+  const image1Height = getSourceHeight(image1);
+  const image2Height = getSourceHeight(image2);
+  const shouldAdjustWidth = enableWidthAdjustment && image1Width !== image2Width;
+  const width = Math.max(image1Width, image2Width);
+  const height = Math.max(image1Height, image2Height);
+
+  const drawNormalizedFrame = (source) => {
+    const canvas = document.createElement('canvas');
+    const ctx = canvas.getContext('2d');
+    const sourceWidth = getSourceWidth(source);
+    const sourceHeight = getSourceHeight(source);
+    canvas.width = width;
+    canvas.height = height;
+
+    if (shouldAdjustWidth) {
+      const offsetX = Math.floor((width - sourceWidth) / 2);
+      ctx.fillStyle = '#ffffff';
+      ctx.fillRect(0, 0, width, height);
+      ctx.drawImage(source, offsetX, 0, sourceWidth, sourceHeight);
+      return canvas;
+    }
+
+    ctx.drawImage(source, 0, 0, sourceWidth, sourceHeight);
+    return canvas;
+  };
+
+  const frameADataUrl = drawNormalizedFrame(image1).toDataURL('image/png');
+  const frameBDataUrl = drawNormalizedFrame(image2).toDataURL('image/png');
+
+  const animationContainer = document.getElementById('diff-animation-container');
+  const animationImage = document.getElementById('diff-animation-image');
+
+  stopDiffAnimation();
+  animationContainer.style.display = 'block';
+  animationImage.src = frameADataUrl;
+
+  let isFrameA = false;
+  diffAnimationIntervalId = window.setInterval(() => {
+    animationImage.src = isFrameA ? frameADataUrl : frameBDataUrl;
+    isFrameA = !isFrameA;
+  }, 500);
 }
 
 export function diffImages(image1, image2, enableWidthAdjustment = false) {
@@ -273,19 +338,29 @@ export function displayDiff() {
   const enabledWidthAdjustment = document.getElementById('enable-width-adjustment').checked;
   const enabledSingleImageDiff = document.getElementById('single-image-diff').checked;
   const singleImageDiffOption = document.querySelector('input[name="single-image-diff-option"]:checked').value;
+  const enabledDiffAnimation = document.getElementById('show-diff-animation').checked;
 
   let sourceA = null;
   let sourceB = null;
 
   if (enabledSingleImageDiff) {
-    if (!imgA.src) return;
+    if (!imgA.src) {
+      hideDiffAnimation();
+      return;
+    }
 
     const splitCanvases = createSplitCanvasesFromSingleImage(imgA, singleImageDiffOption);
-    if (!splitCanvases) return;
+    if (!splitCanvases) {
+      hideDiffAnimation();
+      return;
+    }
 
     [sourceA, sourceB] = splitCanvases;
   } else {
-    if (!imgA.src || !imgB.src) return;
+    if (!imgA.src || !imgB.src) {
+      hideDiffAnimation();
+      return;
+    }
     sourceA = imgA;
     sourceB = imgB;
   }
@@ -310,4 +385,10 @@ export function displayDiff() {
   diffMaskBCanvas.height = diffMaskBResult.height;
   const diffMaskBCtx = diffMaskBCanvas.getContext('2d');
   diffMaskBCtx.drawImage(diffMaskBResult, 0, 0);
+
+  if (enabledDiffAnimation) {
+    showDiffAnimation(sourceA, sourceB, enabledWidthAdjustment);
+  } else {
+    hideDiffAnimation();
+  }
 }
