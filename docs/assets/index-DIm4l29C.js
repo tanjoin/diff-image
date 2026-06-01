@@ -1,0 +1,62 @@
+(function(){const i=document.createElement("link").relList;if(i&&i.supports&&i.supports("modulepreload"))return;for(const e of document.querySelectorAll('link[rel="modulepreload"]'))a(e);new MutationObserver(e=>{for(const d of e)if(d.type==="childList")for(const l of d.addedNodes)l.tagName==="LINK"&&l.rel==="modulepreload"&&a(l)}).observe(document,{childList:!0,subtree:!0});function o(e){const d={};return e.integrity&&(d.integrity=e.integrity),e.referrerPolicy&&(d.referrerPolicy=e.referrerPolicy),e.crossOrigin==="use-credentials"?d.credentials="include":e.crossOrigin==="anonymous"?d.credentials="omit":d.credentials="same-origin",d}function a(e){if(e.ep)return;e.ep=!0;const d=o(e);fetch(e.href,d)}})();const T=` 
+  <div id="splash-screen">
+    <h1>diff-image</h1>
+  </div>
+`;function R(){const n=document.getElementById("splash-screen");n.style.display="flex",setTimeout(()=>{n.classList.add("hidden")},2e3)}let C=null;function b(n){return n.naturalWidth??n.width}function I(n){return n.naturalHeight??n.height}function _(n,i){const o=n.naturalWidth,a=n.naturalHeight;if(i==="vertical"){const h=Math.floor(a/2);if(h<=0)return null;const r=document.createElement("canvas");r.width=o,r.height=h,r.getContext("2d").drawImage(n,0,0,o,h,0,0,o,h);const m=document.createElement("canvas");return m.width=o,m.height=h,m.getContext("2d").drawImage(n,0,a-h,o,h,0,0,o,h),[r,m]}const e=Math.floor(o/2);if(e<=0)return null;const d=document.createElement("canvas");d.width=e,d.height=a,d.getContext("2d").drawImage(n,0,0,e,a,0,0,e,a);const l=document.createElement("canvas");return l.width=e,l.height=a,l.getContext("2d").drawImage(n,o-e,0,e,a,0,0,e,a),[d,l]}function W(){C!==null&&(window.clearInterval(C),C=null)}function M(){W();const n=document.getElementById("diff-animation-container"),i=document.getElementById("diff-animation-image");n.style.display="none",i.removeAttribute("src")}function O(n,i,o=!1){const a=b(n),e=b(i),d=I(n),l=I(i),h=o&&a!==e,r=Math.max(a,e),m=Math.max(d,l),s=t=>{const u=document.createElement("canvas"),v=u.getContext("2d"),y=b(t),D=I(t);if(u.width=r,u.height=m,h){const L=Math.floor((r-y)/2);return v.fillStyle="#ffffff",v.fillRect(0,0,r,m),v.drawImage(t,L,0,y,D),u}return v.drawImage(t,0,0,y,D),u},f=s(n).toDataURL("image/png"),w=s(i).toDataURL("image/png"),g=document.getElementById("diff-animation-container"),p=document.getElementById("diff-animation-image");W(),g.style.display="block",p.src=f;let c=!1;C=window.setInterval(()=>{p.src=c?f:w,c=!c},500)}function j(n,i,o=!1){const a=document.createElement("canvas"),e=a.getContext("2d"),d=b(n),l=b(i),h=I(n),r=I(i),m=o&&d!==l,s=Math.max(d,l),f=Math.max(h,r);a.width=s,a.height=f;const w=t=>{const u=b(t),v=I(t);if(m){const y=Math.floor((s-u)/2);e.fillStyle="#ffffff",e.fillRect(0,0,s,f),e.drawImage(t,y,0,u,v);return}e.drawImage(t,0,0,u,v)};w(n);const g=e.getImageData(0,0,s,f);a.width=s,a.height=f,w(i);const p=e.getImageData(0,0,s,f),c=e.createImageData(s,f);for(let t=0;t<g.data.length;t+=4){const u=Math.abs(g.data[t]-p.data[t]),v=Math.abs(g.data[t+1]-p.data[t+1]),y=Math.abs(g.data[t+2]-p.data[t+2]),D=Math.abs(g.data[t+3]-p.data[t+3]);u+v+y+D>60?(c.data[t]=255,c.data[t+1]=255,c.data[t+2]=255,c.data[t+3]=255):(c.data[t]=0,c.data[t+1]=0,c.data[t+2]=0,c.data[t+3]=255)}return e.putImageData(c,0,0),a}function P(n,i,o=!1){const a=document.createElement("canvas"),e=a.getContext("2d"),d=b(n),l=b(i),h=I(n),r=I(i),m=o&&d!==l,s=Math.max(d,l),f=Math.max(h,r);a.width=s,a.height=f;const w=t=>{const u=b(t),v=I(t);if(m){const y=Math.floor((s-u)/2);e.fillStyle="#ffffff",e.fillRect(0,0,s,f),e.drawImage(t,y,0,u,v);return}e.drawImage(t,0,0,u,v)};w(n);const g=e.getImageData(0,0,s,f);a.width=s,a.height=f,w(i);const p=e.getImageData(0,0,s,f),c=e.createImageData(s,f);for(let t=0;t<g.data.length;t+=4){const u=Math.abs(g.data[t]-p.data[t]),v=Math.abs(g.data[t+1]-p.data[t+1]),y=Math.abs(g.data[t+2]-p.data[t+2]),D=Math.abs(g.data[t+3]-p.data[t+3]);u+v+y+D>60?(c.data[t]=g.data[t],c.data[t+1]=g.data[t+1],c.data[t+2]=g.data[t+2],c.data[t+3]=g.data[t+3]):(c.data[t]=0,c.data[t+1]=0,c.data[t+2]=0,c.data[t+3]=0)}return e.putImageData(c,0,0),a}function U(n,i,o=!1){const a=document.createElement("canvas"),e=a.getContext("2d"),d=b(n),l=b(i),h=I(n),r=I(i),m=o&&d!==l,s=Math.max(d,l),f=Math.max(h,r);a.width=s,a.height=f;const w=t=>{const u=b(t),v=I(t);if(m){const y=Math.floor((s-u)/2);e.fillStyle="#ffffff",e.fillRect(0,0,s,f),e.drawImage(t,y,0,u,v);return}e.drawImage(t,0,0,u,v)};w(n);const g=e.getImageData(0,0,s,f);a.width=s,a.height=f,w(i);const p=e.getImageData(0,0,s,f),c=e.createImageData(s,f);for(let t=0;t<g.data.length;t+=4){const u=Math.abs(g.data[t]-p.data[t]),v=Math.abs(g.data[t+1]-p.data[t+1]),y=Math.abs(g.data[t+2]-p.data[t+2]),D=Math.abs(g.data[t+3]-p.data[t+3]);u+v+y+D>60?(c.data[t]=p.data[t],c.data[t+1]=p.data[t+1],c.data[t+2]=p.data[t+2],c.data[t+3]=p.data[t+3]):(c.data[t]=0,c.data[t+1]=0,c.data[t+2]=0,c.data[t+3]=0)}return e.putImageData(c,0,0),a}function E(){const n=document.getElementById("image-a"),i=document.getElementById("image-b"),o=document.getElementById("diff-canvas"),a=document.getElementById("diff-mask-a"),e=document.getElementById("diff-mask-b"),d=document.getElementById("enable-width-adjustment").checked,l=document.getElementById("single-image-diff").checked,h=document.querySelector('input[name="single-image-diff-option"]:checked').value,r=document.getElementById("show-diff-animation").checked;let m=null,s=null;if(l){if(!n.src){M();return}const u=_(n,h);if(!u){M();return}[m,s]=u}else{if(!n.src||!i.src){M();return}m=n,s=i}const f=j(m,s,d);o.width=f.width,o.height=f.height,o.getContext("2d").drawImage(f,0,0);const g=P(m,s,d);a.width=g.width,a.height=g.height,a.getContext("2d").drawImage(g,0,0);const c=U(m,s,d);e.width=c.width,e.height=c.height,e.getContext("2d").drawImage(c,0,0),r?O(m,s,d):M()}const F=500,N=750,q=3e3,H={"image-a":"Image A","image-b":"Image B"},G=`
+  <div id="upload-container">
+    <button id="upload-button-1">Upload Image 1</button>
+    <input type="file" id="upload-input" accept="image/*" style="display: none;">
+    <button id="upload-button-2">Upload Image 2</button>
+    <input type="file" id="upload-input-2" accept="image/*" style="display: none;">
+    <p id="paste-hint">画像エリアを長押しすると、その枠にクリップボード画像を貼り付けます。</p>
+  </div>
+`;function $(){const n=document.getElementById("upload-button-1"),i=document.getElementById("upload-input"),o=document.getElementById("upload-button-2"),a=document.getElementById("upload-input-2"),e=document.getElementById("single-image-diff"),d=document.getElementById("paste-hint"),l=d?.textContent??"";let h=null;const r=(s=l,f=!1)=>{d&&(d.textContent=s,d.dataset.state=f?"error":"default",h!==null&&window.clearTimeout(h),s!==l&&(h=window.setTimeout(()=>{d.textContent=l,d.dataset.state="default",h=null},q)))},m=()=>{const s=e.checked,f=document.querySelector('[data-target="image-b"]');o.style.display=s?"none":"inline-block",f.style.display=s?"none":"flex"};n.addEventListener("click",()=>{i.click()}),o.addEventListener("click",()=>{a.click()}),i.addEventListener("change",s=>{S(s,"image-a")}),a.addEventListener("change",s=>{S(s,"image-b")}),e.addEventListener("change",m),m(),x("image-a",i,{pasteFromClipboard:()=>B("image-a",r)}),x("image-b",a,{pasteFromClipboard:()=>B("image-b",r)}),X(e,r)}function x(n,i,o){const a=document.querySelector(`[data-target="${n}"]`);let e=null,d=0;a.setAttribute("tabindex","0"),a.setAttribute("role","button");const l=()=>{e!==null&&(window.clearTimeout(e),e=null)},h=r=>{r.pointerType!=="mouse"&&(d=0,l(),e=window.setTimeout(async()=>{e=null,d=Date.now()+N,a.classList.add("clipboard-loading");try{await o.pasteFromClipboard()}finally{a.classList.remove("clipboard-loading")}},F))};a.addEventListener("click",r=>{if(Date.now()<d){r.preventDefault(),r.stopPropagation();return}i.click()}),a.addEventListener("pointerdown",h),a.addEventListener("pointermove",l),a.addEventListener("pointerup",l),a.addEventListener("pointercancel",l),a.addEventListener("pointerleave",l),a.addEventListener("contextmenu",r=>{Date.now()<d&&r.preventDefault()}),a.addEventListener("keydown",r=>{(r.key==="Enter"||r.key===" ")&&(r.preventDefault(),i.click())}),a.addEventListener("dragover",r=>{r.preventDefault(),a.classList.add("dragover")}),a.addEventListener("dragleave",r=>{r.preventDefault(),a.classList.remove("dragover")}),a.addEventListener("drop",r=>{r.preventDefault(),a.classList.remove("dragover");const m=r.dataTransfer.files[0];m&&m.type.startsWith("image/")&&A(m,n)})}function X(n,i){let o=null;document.querySelector('[data-target="image-a"]').addEventListener("mouseenter",()=>{o="image-a"}),document.querySelector('[data-target="image-a"]').addEventListener("mouseleave",()=>{o==="image-a"&&(o=null)}),document.querySelector('[data-target="image-b"]').addEventListener("mouseenter",()=>{o="image-b"}),document.querySelector('[data-target="image-b"]').addEventListener("mouseleave",()=>{o==="image-b"&&(o=null)}),document.addEventListener("paste",a=>{const e=z(a.clipboardData?.items);if(!e)return;const d=n.checked?"image-a":o||"image-a";A(e,d),i(`${H[d]} に貼り付けました。`),a.preventDefault()})}function z(n){if(!n)return null;for(let i=0;i<n.length;i+=1){const o=n[i];if(o.type.startsWith("image/"))return o.getAsFile()}return null}async function B(n,i){if(!navigator.clipboard||typeof navigator.clipboard.read!="function")return i("このブラウザでは長押し貼り付けに未対応です。",!0),!1;try{const o=await navigator.clipboard.read();for(const a of o){const e=a.types.find(l=>l.startsWith("image/"));if(!e)continue;const d=await a.getType(e);return A(d,n),i(`${H[n]} に貼り付けました。`),!0}i("クリップボードに画像がありませんでした。",!0)}catch(o){console.error("Failed to read clipboard image:",o),o?.name==="NotAllowedError"?i("クリップボードの読み取りが許可されませんでした。",!0):i("クリップボードの読み取りに失敗しました。",!0)}return!1}function A(n,i){const o=new FileReader;o.onload=function(a){const e=document.getElementById(i);e.onload=function(){this.style.display="block",E()},e.src=a.target.result},o.readAsDataURL(n)}function S(n,i){const o=n.target.files[0];o&&A(o,i)}document.querySelector("#app").innerHTML=`
+  ${T}
+  <div id="header">
+    <h1>diff-image</h1>
+  </div>
+  <div>
+    <input type="checkbox" id="enable-width-adjustment" name="enable-width-adjustment">
+    <label for="enable-width-adjustment">白背景で幅合わせ</label>
+    <br>
+    <input type="checkbox" id="single-image-diff" name="single-image-diff">
+    <label for="single-image-diff">1つの画像で比較</label>
+    <input type="radio" id="single-image-diff-h" name="single-image-diff-option" value="horizontal" checked>
+    <label for="single-image-diff-h">横並び</label>
+    <input type="radio" id="single-image-diff-v" name="single-image-diff-option" value="vertical">
+    <label for="single-image-diff-v">縦並び</label>
+    <br>
+    <input type="checkbox" id="show-diff-animation" name="show-diff-animation">
+    <label for="show-diff-animation">Diffアニメーションを表示</label>
+  </div>
+  <div id="upload-container">
+    ${G}
+  </div>
+  <div id="image-container">
+    <div class="image-wrapper" data-target="image-a">
+      <img id="image-a" class="image" src="" alt="Image A" onload="this.style.display='block';" onerror="this.style.display='none';">
+      <div class="image-overlay">Click or Drop Image A<br>Long press to paste</div>
+    </div>
+    <div class="image-wrapper" data-target="image-b">
+      <img id="image-b" class="image" src="" alt="Image B" onload="this.style.display='block';" onerror="this.style.display='none';">
+      <div class="image-overlay">Click or Drop Image B<br>Long press to paste</div>
+    </div>
+  </div>
+  <div id="diff-result-container">
+    <h2>Diff Result</h2>
+    <canvas id="diff-canvas"></canvas>
+    <h2>Diff Mask A (only differences)</h2>
+    <canvas id="diff-mask-a"></canvas>
+    <h2>Diff Mask B (only differences)</h2>
+    <canvas id="diff-mask-b"></canvas>
+    <div id="diff-animation-container" style="display: none;">
+      <h2>Diff Animation</h2>
+      <img id="diff-animation-image" alt="Diff animation preview">
+    </div>
+  </div>
+  <span id="footer">
+    <p>
+      <a href="https://github.com/tanjoin/diff-image" class="github-link" target="_blank">GitHub</a>
+    </p>
+  </span>
+`;R();$();document.getElementById("enable-width-adjustment").addEventListener("change",()=>{E()});document.getElementById("single-image-diff").addEventListener("change",()=>{E()});document.querySelectorAll('input[name="single-image-diff-option"]').forEach(n=>{n.addEventListener("change",()=>{E()})});document.getElementById("show-diff-animation").addEventListener("change",()=>{E()});

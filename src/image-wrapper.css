@@ -8,6 +8,8 @@
   justify-content: center;
   cursor: pointer;
   transition: border-color 0.3s, background-color 0.3s;
+  user-select: none;
+  -webkit-touch-callout: none;
 }
 
 .image-wrapper:hover {
@@ -15,9 +17,19 @@
   background-color: rgba(100, 108, 255, 0.05);
 }
 
+.image-wrapper:focus-visible {
+  outline: 3px solid rgba(100, 108, 255, 0.35);
+  outline-offset: 4px;
+}
+
 .image-wrapper.dragover {
   border-color: #535bf2;
   background-color: rgba(100, 108, 255, 0.1);
+}
+
+.image-wrapper.clipboard-loading {
+  border-style: solid;
+  background-color: rgba(100, 108, 255, 0.14);
 }
 
 .image-wrapper .image {

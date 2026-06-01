@@ -82,6 +82,17 @@ button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
 }
 
+#paste-hint {
+  margin: 0.75rem 0 0;
+  color: #888;
+  font-size: 0.95rem;
+  min-height: 1.5em;
+}
+
+#paste-hint[data-state="error"] {
+  color: #d97706;
+}
+
 @media (prefers-color-scheme: light) {
   :root {
     color: #213547;

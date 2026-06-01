@@ -29,11 +29,11 @@ document.querySelector('#app').innerHTML = `
   <div id="image-container">
     <div class="image-wrapper" data-target="image-a">
       <img id="image-a" class="image" src="" alt="Image A" onload="this.style.display='block';" onerror="this.style.display='none';">
-      <div class="image-overlay">Click or Drop Image A</div>
+      <div class="image-overlay">Click or Drop Image A<br>Long press to paste</div>
     </div>
     <div class="image-wrapper" data-target="image-b">
       <img id="image-b" class="image" src="" alt="Image B" onload="this.style.display='block';" onerror="this.style.display='none';">
-      <div class="image-overlay">Click or Drop Image B</div>
+      <div class="image-overlay">Click or Drop Image B<br>Long press to paste</div>
     </div>
   </div>
   <div id="diff-result-container">
